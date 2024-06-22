@@ -1,5 +1,7 @@
 # Ignore node_modules directory
 node_modules/
+.cache/
+*.cache
 
 # Ignore logs
 logs

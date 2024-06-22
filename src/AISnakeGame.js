@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 const GRID_SIZE = 20;
-const CELL_SIZE = 30;
-const GAME_SIZE = GRID_SIZE * CELL_SIZE;
 const INITIAL_SNAKE = [{ x: 10, y: 10 }, { x: 9, y: 10 }];
 const INITIAL_DIRECTION = { x: 1, y: 0 };
 const INITIAL_FOOD = { x: 15, y: 15 };
@@ -15,7 +13,22 @@ const UltimateAISnakeGame = () => {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [error, setError] = useState(null);
+  const [cellSize, setCellSize] = useState(30);
+  const [gameSize, setGameSize] = useState(GRID_SIZE * cellSize);
   const svgRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const minDimension = Math.min(window.innerWidth, window.innerHeight);
+      const newCellSize = Math.floor((minDimension * 0.9) / GRID_SIZE);
+      setCellSize(newCellSize);
+      setGameSize(GRID_SIZE * newCellSize);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const getNeighbors = useCallback((node, currentSnake) => {
     try {
@@ -154,10 +167,10 @@ const UltimateAISnakeGame = () => {
         {Array.from({ length: GRID_SIZE }).map((_, i) => (
           <line
             key={`v${i}`}
-            x1={i * CELL_SIZE}
+            x1={i * cellSize}
             y1={0}
-            x2={i * CELL_SIZE}
-            y2={GAME_SIZE}
+            x2={i * cellSize}
+            y2={gameSize}
             stroke="#34495E"
             strokeWidth="1"
           />
@@ -166,9 +179,9 @@ const UltimateAISnakeGame = () => {
           <line
             key={`h${i}`}
             x1={0}
-            y1={i * CELL_SIZE}
-            x2={GAME_SIZE}
-            y2={i * CELL_SIZE}
+            y1={i * cellSize}
+            x2={gameSize}
+            y2={i * cellSize}
             stroke="#34495E"
             strokeWidth="1"
           />
@@ -183,10 +196,10 @@ const UltimateAISnakeGame = () => {
         {snake.map((segment, index) => (
           <rect
             key={index}
-            x={segment.x * CELL_SIZE}
-            y={segment.y * CELL_SIZE}
-            width={CELL_SIZE}
-            height={CELL_SIZE}
+            x={segment.x * cellSize}
+            y={segment.y * cellSize}
+            width={cellSize}
+            height={cellSize}
             rx={5}
             ry={5}
             fill={index === 0 ? '#2ECC71' : '#27AE60'}
@@ -206,14 +219,14 @@ const UltimateAISnakeGame = () => {
   const renderFood = () => {
     return (
       <circle
-        cx={(food.x * CELL_SIZE) + (CELL_SIZE / 2)}
-        cy={(food.y * CELL_SIZE) + (CELL_SIZE / 2)}
-        r={CELL_SIZE / 3}
+        cx={(food.x * cellSize) + (cellSize / 2)}
+        cy={(food.y * cellSize) + (cellSize / 2)}
+        r={cellSize / 3}
         fill="#E74C3C"
       >
         <animate
           attributeName="r"
-          values={`${CELL_SIZE / 3};${CELL_SIZE / 2.5};${CELL_SIZE / 3}`}
+          values={`${cellSize / 3};${cellSize / 2.5};${cellSize / 3}`}
           dur="1s"
           repeatCount="indefinite"
         />
@@ -238,41 +251,44 @@ const UltimateAISnakeGame = () => {
       padding: '20px'
     }}>
       <h1 style={{ 
-        fontSize: '36px', 
+        fontSize: 'clamp(24px, 5vw, 36px)', 
         fontWeight: 'bold', 
         marginBottom: '20px',
-        color: '#E74C3C'
+        color: '#E74C3C',
+        textAlign: 'center'
       }}>Ultimate AI Snake Game</h1>
       <svg
         ref={svgRef}
-        width={GAME_SIZE}
-        height={GAME_SIZE}
+        width={gameSize}
+        height={gameSize}
         style={{
           border: '3px solid #34495E',
           borderRadius: '10px',
           boxShadow: '0 0 20px rgba(0, 0, 0, 0.3)',
+          maxWidth: '90vw',
+          maxHeight: '90vh'
         }}
       >
-        <rect width={GAME_SIZE} height={GAME_SIZE} fill="#2C3E50" />
+        <rect width={gameSize} height={gameSize} fill="#2C3E50" />
         {renderGrid()}
         {renderSnake()}
         {renderFood()}
       </svg>
       <div style={{ 
         marginTop: '20px', 
-        fontSize: '24px',
+        fontSize: 'clamp(18px, 4vw, 24px)',
         fontWeight: 'bold'
       }}>Score: {score}</div>
       <div style={{ 
         marginTop: '20px', 
-        fontSize: '16px', 
+        fontSize: 'clamp(14px, 3vw, 16px)', 
         color: '#BDC3C7',
         textAlign: 'center'
       }}>
         AI is controlling the snake
         {gameOver && (
           <div style={{ marginTop: '10px' }}>
-            <p style={{ fontSize: '28px', fontWeight: 'bold', color: '#E74C3C' }}>Game Over!</p>
+            <p style={{ fontSize: 'clamp(24px, 5vw, 28px)', fontWeight: 'bold', color: '#E74C3C' }}>Game Over!</p>
             <button
               style={{
                 marginTop: '10px',
@@ -282,7 +298,7 @@ const UltimateAISnakeGame = () => {
                 border: 'none',
                 borderRadius: '5px',
                 cursor: 'pointer',
-                fontSize: '18px',
+                fontSize: 'clamp(16px, 3vw, 18px)',
                 transition: 'background-color 0.3s'
               }}
               onClick={resetGame}
