@@ -261,7 +261,7 @@ const UltimateAISnakeGame = () => {
         position: 'relative',
         display: 'inline-block'
       }}>
-        AI Plays Snake
+        AutoSnake
         <span style={{
           position: 'absolute',
           bottom: '-5px',
