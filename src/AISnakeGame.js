@@ -245,8 +245,8 @@ const UltimateAISnakeGame = () => {
       alignItems: 'center',
       justifyContent: 'center',
       minHeight: '100vh',
-      backgroundColor: '#2C3E50',
-      color: '#ECF0F1',
+      backgroundColor: '#E0E5EC',
+      color: '#2C3E50',
       fontFamily: 'Arial, sans-serif',
       padding: '20px'
     }}>
@@ -254,9 +254,24 @@ const UltimateAISnakeGame = () => {
         fontSize: 'clamp(24px, 5vw, 36px)', 
         fontWeight: 'bold', 
         marginBottom: '20px',
-        color: '#E74C3C',
-        textAlign: 'center'
-      }}>Ultimate AI Snake Game</h1>
+        color: '#2C3E50',
+        textAlign: 'center',
+        textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
+        letterSpacing: '2px',
+        position: 'relative',
+        display: 'inline-block'
+      }}>
+        AI Plays Snake
+        <span style={{
+          position: 'absolute',
+          bottom: '-5px',
+          left: '0',
+          width: '100%',
+          height: '3px',
+          background: 'linear-gradient(to right, #3498DB, #E74C3C)',
+          borderRadius: '2px'
+        }}></span>
+      </h1>
       <svg
         ref={svgRef}
         width={gameSize}
@@ -264,9 +279,10 @@ const UltimateAISnakeGame = () => {
         style={{
           border: '3px solid #34495E',
           borderRadius: '10px',
-          boxShadow: '0 0 20px rgba(0, 0, 0, 0.3)',
+          boxShadow: '0 10px 20px rgba(0, 0, 0, 0.1)',
           maxWidth: '90vw',
-          maxHeight: '90vh'
+          maxHeight: '90vh',
+          backgroundColor: '#2C3E50'
         }}
       >
         <rect width={gameSize} height={gameSize} fill="#2C3E50" />
@@ -277,12 +293,13 @@ const UltimateAISnakeGame = () => {
       <div style={{ 
         marginTop: '20px', 
         fontSize: 'clamp(18px, 4vw, 24px)',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#2C3E50'
       }}>Score: {score}</div>
       <div style={{ 
         marginTop: '20px', 
         fontSize: 'clamp(14px, 3vw, 16px)', 
-        color: '#BDC3C7',
+        color: '#34495E',
         textAlign: 'center'
       }}>
         AI is controlling the snake
@@ -299,7 +316,8 @@ const UltimateAISnakeGame = () => {
                 borderRadius: '5px',
                 cursor: 'pointer',
                 fontSize: 'clamp(16px, 3vw, 18px)',
-                transition: 'background-color 0.3s'
+                transition: 'background-color 0.3s',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
               }}
               onClick={resetGame}
             >
